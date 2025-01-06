@@ -14,7 +14,7 @@ zstyle ':omz:update' frequency 14
 plugins=(git poetry fzf)
 
 source $ZSH/oh-my-zsh.sh
-
+export ZSH_CUSTOM="$HOME/.zsh_custom"
 
 
 export EDITOR='nvim'
