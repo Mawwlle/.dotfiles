@@ -1,4 +1,4 @@
-" BASE SETTINGS
+" BAS: SETTINGS
 " ___________________________________________________________________________________
 set mouse=a  " enable mouse
 set encoding=utf-8
@@ -55,6 +55,7 @@ Plug 'justinmk/vim-sneak'
 
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.5' }
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+Plug 'nvim-lua/plenary.nvim'
 
 call plug#end()
 " ___________________________________________________________________________________

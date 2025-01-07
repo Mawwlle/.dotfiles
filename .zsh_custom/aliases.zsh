@@ -1,1 +1,6 @@
 alias l='ls -lah'
+alias c='clear'
+alias dps='docker ps'
+alias gocode='cd ~/code'
+alias goprj='cd ~/code/projects'
+alias smile='cd ~/code/smile'
