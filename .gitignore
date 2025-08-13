@@ -1,0 +1,3 @@
+.config/zed/*
+.config/tmuxinator/*
+.config/nvim/plugin/*
