@@ -8,6 +8,7 @@ ZSH_THEME="robbyrussell"
 
 
 
+export PATH="/usr/local/bin:$HOME/bin:$PATH"
 zstyle ':omz:update' mode auto      # update automatically without asking
 
 zstyle ':omz:update' frequency 14
@@ -21,7 +22,22 @@ export EDITOR='nvim'
 source $ZSH_CUSTOM/aliases.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+# Notification function for long-running commands
+notify() {
+  "$@"
+  local exit_code=$?
+  if [ $exit_code -eq 0 ]; then
+    terminal-notifier -title "✓ $1" -message "Command finished successfully" -sound Glass -execute "/Users/mawwlle/.local/bin/focus-claude-tab.sh"
+  else
+    terminal-notifier -title "✗ $1" -message "Command failed with code $exit_code" -sound Glass -execute "/Users/mawwlle/.local/bin/focus-claude-tab.sh"
+  fi
+  return $exit_code
+}
+
 
 export NVM_DIR="$HOME/.nvm"
   [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
   [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  
+export JAVA_HOME="/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home"
+export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
+export PATH="/opt/homebrew/opt/node@22/bin:$PATH"

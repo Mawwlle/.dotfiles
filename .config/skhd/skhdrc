@@ -1,0 +1,23 @@
+# -----------------------------------
+# Modifier: ctrl (Caps) + cmd
+# Row: Right-hand home keys (J K L ;)
+# -----------------------------------
+
+# j — VS Code (main work)
+ctrl + cmd - l : open -a "Visual Studio Code"
+
+# k — Warp (terminal)
+ctrl + cmd - k : open -a "Iterm"
+
+# l — Zen browser
+ctrl + cmd - j : open -a "Google Chrome"
+
+# o - Zed editor
+ctrl + cmd - o : open -a "Zed"
+
+# t — Telegram (chat)
+ctrl + cmd - t : open -a "Telegram"
+
+# h — Finder (slightly left of home)
+ctrl + cmd - h : open -a "Finder"
+
