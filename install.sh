@@ -56,9 +56,18 @@ install_neovim_linux() {
     fi
     log "Installing Neovim stable from GitHub releases..."
     mkdir -p "$HOME/.local/bin" "$HOME/.local/lib"
-    curl -fsSL https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz \
+    local arch
+    arch="$(uname -m)"
+    local tarball
+    case "$arch" in
+        x86_64)  tarball="nvim-linux-x86_64.tar.gz" ;;
+        aarch64) tarball="nvim-linux-arm64.tar.gz" ;;
+        *)       echo "Unsupported architecture: $arch" >&2; exit 1 ;;
+    esac
+    local dirname="${tarball%.tar.gz}"
+    curl -fsSL "https://github.com/neovim/neovim/releases/latest/download/$tarball" \
         | tar -xz -C "$HOME/.local/lib"
-    ln -sfn "$HOME/.local/lib/nvim-linux-x86_64/bin/nvim" "$nvim_bin"
+    ln -sfn "$HOME/.local/lib/$dirname/bin/nvim" "$nvim_bin"
     export PATH="$HOME/.local/bin:$PATH"
 }
 
