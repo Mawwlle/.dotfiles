@@ -157,7 +157,7 @@ require('packer').startup(function(use)
     use 'theHamsta/nvim-dap-virtual-text'
 end)
 
-vim.cmd([[colorscheme pustota]])
+pcall(vim.cmd, 'colorscheme pustota')
 
 require('nvim-treesitter').setup()
 
