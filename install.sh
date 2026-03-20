@@ -111,14 +111,14 @@ npm install -g \
     vscode-langservers-extracted
 
 
-# oh-my-zsh
+# oh-my-zsh (KEEP_ZSHRC=yes — don't touch our dotfile-managed .zshrc)
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
     log "Installing oh-my-zsh..."
-    RUNZSH=no CHSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    RUNZSH=no CHSH=no KEEP_ZSHRC=yes sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
 
 # zsh-syntax-highlighting as omz plugin
-ZSH_SYNTAX="$HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+ZSH_SYNTAX="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
 if [ ! -d "$ZSH_SYNTAX" ]; then
     log "Installing zsh-syntax-highlighting..."
     git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting "$ZSH_SYNTAX"
@@ -126,6 +126,18 @@ fi
 
 log "Stowing dotfiles..."
 stow --dir="$DOTFILES" --target="$HOME" --restow .
+
+# Change default shell to zsh
+ZSH_BIN="$(command -v zsh)"
+if [ "$SHELL" != "$ZSH_BIN" ]; then
+    log "Changing default shell to zsh..."
+    if grep -qF "$ZSH_BIN" /etc/shells; then
+        chsh -s "$ZSH_BIN"
+    else
+        echo "$ZSH_BIN" | sudo tee -a /etc/shells
+        chsh -s "$ZSH_BIN"
+    fi
+fi
 
 
 PACKER_DIR="$HOME/.local/share/nvim/site/pack/packer/start/packer.nvim"
