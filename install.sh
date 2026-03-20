@@ -75,14 +75,14 @@ install_packages_linux() {
     if command -v apt-get &>/dev/null; then
         sudo apt-get update -q
         sudo apt-get install -y \
-            git curl stow \
+            git curl stow zsh \
             build-essential \
             python3 python3-pip \
             fzf ripgrep \
             elixir
     elif command -v dnf &>/dev/null; then
         sudo dnf install -y \
-            git curl stow \
+            git curl stow zsh \
             gcc make \
             python3 python3-pip \
             fzf ripgrep \
@@ -110,6 +110,19 @@ npm install -g \
     typescript-language-server \
     vscode-langservers-extracted
 
+
+# oh-my-zsh
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+    log "Installing oh-my-zsh..."
+    RUNZSH=no CHSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+fi
+
+# zsh-syntax-highlighting as omz plugin
+ZSH_SYNTAX="$HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+if [ ! -d "$ZSH_SYNTAX" ]; then
+    log "Installing zsh-syntax-highlighting..."
+    git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting "$ZSH_SYNTAX"
+fi
 
 log "Stowing dotfiles..."
 stow --dir="$DOTFILES" --target="$HOME" --restow .
