@@ -131,12 +131,9 @@ stow --dir="$DOTFILES" --target="$HOME" --restow .
 ZSH_BIN="$(command -v zsh)"
 if [ "$SHELL" != "$ZSH_BIN" ]; then
     log "Changing default shell to zsh..."
-    if grep -qF "$ZSH_BIN" /etc/shells; then
-        chsh -s "$ZSH_BIN"
-    else
-        echo "$ZSH_BIN" | sudo tee -a /etc/shells
-        chsh -s "$ZSH_BIN"
-    fi
+    echo "[install] sudo is required to run 'usermod -s $ZSH_BIN $USER' — this changes your login shell in /etc/passwd."
+    grep -qF "$ZSH_BIN" /etc/shells || echo "$ZSH_BIN" | sudo tee -a /etc/shells
+    sudo usermod -s "$ZSH_BIN" "$USER"
 fi
 
 
