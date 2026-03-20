@@ -1,3 +1,10 @@
 .config/zed/*
 .config/tmuxinator/*
 .config/nvim/plugin/*
+
+# Neovim plugins (managed by packer, installed at runtime)
+.local/share/
+
+# App-generated configs / credentials
+.config/github-copilot/
+.config/mlflow/

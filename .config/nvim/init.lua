@@ -1,3 +1,5 @@
+vim.opt.runtimepath:append(vim.fn.stdpath('data') .. '/site')
+
 vim.opt.mouse = "a" -- Enable mouse support
 vim.opt.encoding = "utf-8" -- Общая кодировка (необязательно, по умолчанию UTF-8)
 vim.opt.fileencoding = "utf-8" -- Кодировка файлов
@@ -62,6 +64,22 @@ vim.keymap.set('n', '<M-k>', '<C-w>k', { noremap = true })
 vim.keymap.set('n', '<M-h>', '<C-w>h', { noremap = true })
 vim.keymap.set('n', '<M-l>', '<C-w>l', { noremap = true })
 
+-- Terminal: auto-enter insert, no line numbers, Esc to exit
+vim.api.nvim_create_autocmd('TermOpen', {
+    callback = function()
+        vim.opt_local.number = false
+        vim.opt_local.relativenumber = false
+        vim.opt_local.signcolumn = 'no'
+        vim.cmd('startinsert')
+    end
+})
+vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { noremap = true })
+vim.keymap.set('t', '<M-j>', '<C-\\><C-n><C-w>j', { noremap = true })
+vim.keymap.set('t', '<M-k>', '<C-\\><C-n><C-w>k', { noremap = true })
+vim.keymap.set('t', '<M-h>', '<C-\\><C-n><C-w>h', { noremap = true })
+vim.keymap.set('t', '<M-l>', '<C-\\><C-n><C-w>l', { noremap = true })
+vim.keymap.set('n', '<C-\\>', ':split | terminal<CR>', { noremap = true, silent = true })
+
 require('packer').startup(function(use)
     use 'wbthomason/packer.nvim'
     use 'nvim-lua/plenary.nvim' -- For Telescope plugin
@@ -97,6 +115,8 @@ require('packer').startup(function(use)
     use 'nvim-telescope/telescope-fzf-native.nvim'
     use 'Pocco81/auto-save.nvim' -- Автосохранение
 
+    use 'nvim-treesitter/nvim-treesitter'
+
     use {
         'lewis6991/gitsigns.nvim',
         config = function()
@@ -112,6 +132,23 @@ require('packer').startup(function(use)
         end
     }
 
+    use {
+        'zbirenbaum/copilot.lua',
+        config = function()
+            require('copilot').setup({
+                suggestion = { enabled = false },
+                panel = { enabled = false },
+            })
+        end
+    }
+    use {
+        'zbirenbaum/copilot-cmp',
+        after = 'copilot.lua',
+        config = function()
+            require('copilot_cmp').setup()
+        end
+    }
+
     -- DAP (Debug Adapter Protocol)
     use 'mfussenegger/nvim-dap'
     use 'rcarriga/nvim-dap-ui'
@@ -120,7 +157,16 @@ require('packer').startup(function(use)
     use 'theHamsta/nvim-dap-virtual-text'
 end)
 
-vim.cmd([[colorscheme pustota]]) -- kanagawa-wave, kanagawa-dragon, kanagawa-lotus
+vim.cmd([[colorscheme pustota]])
+
+require('nvim-treesitter').setup()
+
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = { 'elixir', 'eelixir', 'heex' },
+    callback = function(args)
+        vim.treesitter.start(args.buf)
+    end,
+})
 
 -- LSP
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
@@ -176,6 +222,33 @@ vim.lsp.config('pyright', {
 
 -- Enable Pyright LSP
 vim.lsp.enable('pyright')
+
+-- TypeScript / JavaScript
+vim.lsp.config('ts_ls', {
+    cmd = { 'typescript-language-server', '--stdio' },
+    filetypes = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
+    root_markers = { 'tsconfig.json', 'package.json', '.git' },
+    capabilities = capabilities,
+})
+vim.lsp.enable('ts_ls')
+
+-- HTML
+vim.lsp.config('html', {
+    cmd = { 'vscode-html-language-server', '--stdio' },
+    filetypes = { 'html' },
+    root_markers = { 'package.json', '.git' },
+    capabilities = capabilities,
+})
+vim.lsp.enable('html')
+
+-- ElixirLS
+vim.lsp.config('elixirls', {
+    cmd = { 'elixir-ls' },
+    filetypes = { 'elixir', 'eelixir', 'heex' },
+    root_markers = { 'mix.exs', '.git' },
+    capabilities = capabilities,
+})
+vim.lsp.enable('elixirls')
 
 -- LSP Diagnostic configuration
 vim.diagnostic.config({
@@ -254,6 +327,7 @@ cmp.setup({
   },
   
   sources = {
-    { name = 'nvim_lsp', max_item_count = 10 },  -- Только LSP предложения
-  }, 
+    { name = 'copilot',  max_item_count = 5 },
+    { name = 'nvim_lsp', max_item_count = 5 },
+  },
 })
