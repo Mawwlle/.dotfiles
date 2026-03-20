@@ -112,7 +112,7 @@ require('packer').startup(function(use)
     }
 
     use 'nvim-telescope/telescope.nvim'
-    use 'nvim-telescope/telescope-fzf-native.nvim'
+    use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
     use 'Pocco81/auto-save.nvim' -- Автосохранение
 
     use 'nvim-treesitter/nvim-treesitter'

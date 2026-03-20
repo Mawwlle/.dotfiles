@@ -76,12 +76,14 @@ install_packages_linux() {
         sudo apt-get update -q
         sudo apt-get install -y \
             git curl stow \
+            build-essential \
             python3 python3-pip \
             fzf ripgrep \
             elixir
     elif command -v dnf &>/dev/null; then
         sudo dnf install -y \
             git curl stow \
+            gcc make \
             python3 python3-pip \
             fzf ripgrep \
             elixir
