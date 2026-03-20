@@ -118,7 +118,7 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
 fi
 
 # zsh-syntax-highlighting as omz plugin
-ZSH_SYNTAX="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
+ZSH_SYNTAX="$HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
 if [ ! -d "$ZSH_SYNTAX" ]; then
     log "Installing zsh-syntax-highlighting..."
     git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting "$ZSH_SYNTAX"
