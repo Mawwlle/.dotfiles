@@ -124,4 +124,10 @@ fi
 log "Installing Neovim plugins (headless)..."
 nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
+FZF_NATIVE="$HOME/.local/share/nvim/site/pack/packer/start/telescope-fzf-native.nvim"
+if [ -d "$FZF_NATIVE" ]; then
+    log "Building telescope-fzf-native..."
+    make -C "$FZF_NATIVE"
+fi
+
 log "Done. Restart your shell."
