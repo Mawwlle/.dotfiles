@@ -8,3 +8,4 @@
 # App-generated configs / credentials
 .config/github-copilot/
 .config/mlflow/
+.zsh_custom
